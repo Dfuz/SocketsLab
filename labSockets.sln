@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "labSockets", "labSockets\labSockets.csproj", "{4346BB49-ACBE-418D-B6D3-A88D43296633}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4346BB49-ACBE-418D-B6D3-A88D43296633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4346BB49-ACBE-418D-B6D3-A88D43296633}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4346BB49-ACBE-418D-B6D3-A88D43296633}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4346BB49-ACBE-418D-B6D3-A88D43296633}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9A849633-4FAD-47BF-81B5-60A0CB0D52F1}
+	EndGlobalSection
+EndGlobal
