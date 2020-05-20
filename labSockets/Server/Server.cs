@@ -12,7 +12,7 @@ namespace labSockets
     internal class Server : ISocketsLab
     {
         private readonly int port; // порт для приема входящих запросов
-        private static readonly int numberOfConnections = 5; // максимальное число одновременных подключений
+        private static readonly int numberOfConnections = 2; // максимальное число одновременных подключений
         private const string m_fileName = @"log.txt"; // файл для логов
         private TextWriter m_fileWriter = null;
         List<Thread> connectionList;
@@ -63,17 +63,17 @@ namespace labSockets
                 Console.WriteLine("Сервер запущен. Ожидание подключений...");
                 while (true)
                 {
-                    if (connectionList.Count < numberOfConnections)
+                    if (connectionList.Count <= numberOfConnections)
                     {
                         TcpClient client = listener.AcceptTcpClient();
                         ClientObject clientObject = new ClientObject(client, m_fileWriter);
 
                         // создаем новый поток для обслуживания нового клиента
-                        Thread clientThread = new Thread(new ThreadStart(clientObject.Process));
+                        var clientThread = new Thread(new ThreadStart(clientObject.Process));
                         clientThread.Start();
-                        
                         connectionList.Add(clientThread);
                     }
+                    connectionList.RemoveAll(thr => thr.IsAlive == false);
                 }
             }
             catch (Exception ex)
