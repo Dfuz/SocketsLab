@@ -26,7 +26,7 @@ namespace labSockets
                 socket.Connect(ipPoint);
                 Console.Write("Введите сообщение $ ");
                 string message = Console.ReadLine();
-                byte[] data = Encoding.Unicode.GetBytes(message);
+                byte[] data = Encoding.UTF8.GetBytes(message);
                 socket.Send(data);
 
                 // получаем ответ
@@ -37,7 +37,7 @@ namespace labSockets
                 do
                 {
                     bytes = socket.Receive(data, data.Length, 0);
-                    builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                    builder.Append(Encoding.UTF8.GetString(data, 0, bytes));
                 }
                 while (socket.Available > 0);
                 Console.WriteLine("Ответ сервера: " + builder.ToString());
