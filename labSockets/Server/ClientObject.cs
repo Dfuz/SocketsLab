@@ -55,7 +55,7 @@ namespace labSockets
                     // отправляем обратно сообщение в верхнем регистре
 
                     var response = new string(message.Reverse().ToArray());
-                    //response += "\nСервер создал Перфильев В.Д.";
+
                     data = Encoding.UTF8.GetBytes(response);
                     stream.Write(data, 0, data.Length);
                 }

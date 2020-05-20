@@ -3,13 +3,13 @@ using System.Net.Sockets;
 
 namespace labSockets
 {
-    class Program
+    static class Program
     {
         private static ISocketsLab App;
         private static string port;
         private static string address;
-        
-        static void Main(string[] args)
+
+        private static void Main(string[] args)
         {
             var startParam = '0';
             while (startParam != '1' && startParam != '2')
@@ -24,11 +24,11 @@ namespace labSockets
             {
                 Console.Write("Выберите адрес $ ");
                 address = Console.ReadLine();
-                App = new Client(Int32.Parse(port), address);
+                App = new Client(int.Parse(port), address);
             }
             else
             {
-                App = new Server(Int32.Parse(port));
+                App = new Server(int.Parse(port));
             }
             App.Start();
         }

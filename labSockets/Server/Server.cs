@@ -9,14 +9,14 @@ namespace labSockets
 {
     internal class Server : ISocketsLab
     {
-        private readonly int port; // порт для приема входящих запросов
-        private static readonly int numberOfConnections = 5; // максимальное число одновременных подключений
+        private readonly int _port; // порт для приема входящих запросов
+        private static readonly int NumberOfConnections = 4; // максимальное число одновременных подключений
         private const string m_fileName = @"log.txt"; // файл для логов
         private TextWriter m_fileWriter = null;
         List<Thread> connectionList;
-        public Server(int _port)
+        public Server(int port)
         {
-            port = _port;
+            _port = port;
             connectionList = new List<Thread>();
         }
 
@@ -25,16 +25,16 @@ namespace labSockets
             try
             {
                 var hostInfo = Dns.GetHostEntry("localhost");
-                var listener = new TcpListener(hostInfo.AddressList[1], port);
+                var listener = new TcpListener(hostInfo.AddressList[1], _port);
 
                 listener.Start(1);
 
                 m_fileWriter = TextWriter.Synchronized(new StreamWriter(m_fileName, true));
-                Console.WriteLine("Сервер запущен по адресу: " + hostInfo.AddressList[1] +  ":" + port);
+                Console.WriteLine("Сервер запущен по адресу: " + hostInfo.AddressList[1] +  ":" + _port);
                 Console.WriteLine("Ожидание подключений...");
                 while (true)
                 {
-                    if (connectionList.Count < numberOfConnections)
+                    if (connectionList.Count < NumberOfConnections)
                     {
                         TcpClient client = listener.AcceptTcpClient();
                         ClientObject clientObject = new ClientObject(client, m_fileWriter);

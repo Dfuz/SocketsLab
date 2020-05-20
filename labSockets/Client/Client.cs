@@ -9,24 +9,23 @@ namespace labSockets
     internal class Client : ISocketsLab
     {
         // адрес и порт сервера, к которому будем подключаться
-        private readonly int port; // порт сервера
-        private readonly string address; // адрес сервера
-        const string writePath = @"log_client.txt";
-        public Client(int _port, string _address)
+        private readonly int _port; // порт сервера
+        private readonly string _address; // адрес сервера
+        const string WritePath = @"log_client.txt";
+        public Client(int port, string address)
         {
-            port = _port;
-            address = _address;
+            _port = port;
+            _address = address;
         }
         public void Start()
         {
             TcpClient client = null;
             try
             {
-                client = new TcpClient(address, port);
+                client = new TcpClient(_address, _port);
                 NetworkStream stream = client.GetStream();
                 while (true)
                 {
-                    //Console.Write("Введите сообщение $ ");
                     string message = Console.ReadLine();
 
                     // преобразуем сообщение в массив байтов
@@ -39,7 +38,7 @@ namespace labSockets
                     MyIpClient = Convert.ToString(((System.Net.IPEndPoint)client.Client.RemoteEndPoint).Address);
                     MyPortClient = Convert.ToString(((System.Net.IPEndPoint)client.Client.RemoteEndPoint).Port);
 
-                    using (StreamWriter sw = new StreamWriter(writePath, true, System.Text.Encoding.Default))
+                    using (StreamWriter sw = new StreamWriter(WritePath, true, System.Text.Encoding.Default))
                     {
                         sw.WriteLine("Date: " + DateTime.Now.ToString() + " IP: " + MyIpClient + ":" + MyPortClient + " Message: " + message);
                     }
@@ -60,7 +59,7 @@ namespace labSockets
                     message = builder.ToString();
                     Console.WriteLine("Ответ сервера: " + message);
 
-                    using (StreamWriter sw = new StreamWriter(writePath, true, System.Text.Encoding.Default))
+                    using (StreamWriter sw = new StreamWriter(WritePath, true, System.Text.Encoding.Default))
                     {
                         sw.WriteLine("Date: " + DateTime.Now.ToString() + " IP: " + MyIpClient + ":" + MyPortClient + " Response: " + message);
                     }
@@ -72,7 +71,7 @@ namespace labSockets
             }
             finally
             {
-                if (client != null) client.Close();
+                client?.Close();
             }
             Console.ReadKey();
         }
