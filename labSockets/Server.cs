@@ -1,39 +1,46 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace labSockets
 {
-    internal class Server
+    internal class Server : ISocketsLab
     {
-        private static int _port; // порт для приема входящих запросов
-        public Server(int port)
+        private readonly int port; // порт для приема входящих запросов
+        List<Thread> connectionList;
+        public Server(int _port)
         {
-            _port = port;
+            port = _port;
         }
-        static void Start(string[] args)
-        {
-            // получаем адреса для запуска сокета
-            IPEndPoint ipPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), _port);
 
-            // создаем сокет
-            Socket listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        public void Start()
+        {
             try
             {
+                var hostInfo = Dns.GetHostEntry("localhost");
+
+                // получаем адреса для запуска сокета
+                var ipPoint = new IPEndPoint(hostInfo.AddressList[0], port);
+
+                // создаем сокет
+                var listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
                 // связываем сокет с локальной точкой, по которой будем принимать данные
                 listenSocket.Bind(ipPoint);
 
                 // начинаем прослушивание
-                listenSocket.Listen(10);
+                listenSocket.Listen(1);
 
                 Console.WriteLine("Сервер запущен. Ожидание подключений...");
 
                 while (true)
                 {
-                    Socket handler = listenSocket.Accept();
+                    var handler = listenSocket.Accept();
                     // получаем сообщение
-                    StringBuilder builder = new StringBuilder();
+                    var builder = new StringBuilder();
                     int bytes = 0; // количество полученных байтов
                     byte[] data = new byte[256]; // буфер для получаемых данных
 
