@@ -12,7 +12,7 @@ namespace labSockets
     internal class Server : ISocketsLab
     {
         private readonly int port; // порт для приема входящих запросов
-        private static readonly int numberOfConnections = 2; // максимальное число одновременных подключений
+        private static readonly int numberOfConnections = 1; // максимальное число одновременных подключений
         private const string m_fileName = @"log.txt"; // файл для логов
         private TextWriter m_fileWriter = null;
         List<Thread> connectionList;
@@ -55,19 +55,21 @@ namespace labSockets
             try
             {
                 var hostInfo = Dns.GetHostEntry("localhost");
-                //var listener = new TcpListener(hostInfo.AddressList[0], port);
-                var listener = new TcpListener(IPAddress.Parse("127.0.0.1"), port);
+                var listener = new TcpListener(hostInfo.AddressList[1], port);
+
+                //var listener = new TcpListener(IPAddress.Parse("127.0.0.1"), port);
                 listener.Start(1);
                 //TaskWriter();
                 m_fileWriter = TextWriter.Synchronized(new StreamWriter(m_fileName, true));
                 Console.WriteLine("Сервер запущен. Ожидание подключений...");
                 while (true)
                 {
-                    if (connectionList.Count <= numberOfConnections)
+                    if (connectionList.Count < numberOfConnections)
                     {
                         TcpClient client = listener.AcceptTcpClient();
                         ClientObject clientObject = new ClientObject(client, m_fileWriter);
-
+                        Console.WriteLine("Подключен клиент с IP: " + Convert.ToString(((IPEndPoint)client.Client.RemoteEndPoint).Address) 
+                                                                    + Convert.ToString(((System.Net.IPEndPoint)client.Client.RemoteEndPoint).Port));
                         // создаем новый поток для обслуживания нового клиента
                         var clientThread = new Thread(new ThreadStart(clientObject.Process));
                         clientThread.Start();

@@ -25,7 +25,7 @@ namespace labSockets
                 Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 // подключаемся к удаленному хосту
                 socket.Connect(ipPoint);
-                Console.Write("Введите сообщение $");
+                Console.Write("Введите сообщение $ ");
                 string message = Console.ReadLine();
                 byte[] data = Encoding.Unicode.GetBytes(message);
                 socket.Send(data);

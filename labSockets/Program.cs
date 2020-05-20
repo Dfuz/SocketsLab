@@ -14,15 +14,15 @@ namespace labSockets
             var startParam = '0';
             while (startParam != '1' && startParam != '2')
             {
-                Console.Write("1 - to start server, 2 - client $ ");
+                Console.Write("1 - запустить сервер, 2 - присоединиться как клиент $ ");
                 startParam = Console.ReadKey().KeyChar;
                 Console.WriteLine();
             }
-            Console.Write("Select port $ ");
+            Console.Write("Выберите порт $ ");
             port = Console.ReadLine();
             if (startParam == '2')
             {
-                Console.Write("Select address $ ");
+                Console.Write("Выберите адрес $ ");
                 address = Console.ReadLine();
                 App = new Client(Int32.Parse(port), address);
             }

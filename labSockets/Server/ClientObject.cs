@@ -40,7 +40,7 @@ namespace labSockets
 
                     if (string.Empty == message || !client.Connected)
                     {
-                        Console.WriteLine("Client disconnected");
+                        Console.WriteLine("Клиент отключился");
                         break;
                     }
 
@@ -51,12 +51,9 @@ namespace labSockets
                     Console.WriteLine("Date: " + DateTime.Now + " IP: " + MyIpClient + ":" + MyPortClient +
                                       " Message: " + message);
 
-                    //using (var sw = new StreamWriter(writePath, true, Encoding.Default))
-                    //{
                     m_fileWriter.WriteLine("Date: " + DateTime.Now + " IP: " + MyIpClient + ":" + MyPortClient +
                                                " Message: " + message);
                     m_fileWriter.Flush();
-                    //}
                     // отправляем обратно сообщение в верхнем регистре
 
                     var response = new string(message.Reverse().ToArray());
