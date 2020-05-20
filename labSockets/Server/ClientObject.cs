@@ -52,10 +52,8 @@ namespace labSockets
                     m_fileWriter.WriteLine("Date: " + DateTime.Now + " IP: " + MyIpClient + ":" + MyPortClient +
                                                " Message: " + message);
                     m_fileWriter.Flush();
-                    // отправляем обратно сообщение в верхнем регистре
 
                     var response = new string(message.Reverse().ToArray());
-
                     data = Encoding.UTF8.GetBytes(response);
                     stream.Write(data, 0, data.Length);
                 }
@@ -66,10 +64,8 @@ namespace labSockets
             }
             finally
             {
-                if (stream != null)
-                    stream.Close();
-                if (client != null)
-                    client.Close();
+                stream?.Close();
+                client?.Close();
             }
         }
     }

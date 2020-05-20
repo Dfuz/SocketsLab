@@ -10,7 +10,7 @@ namespace labSockets
         // адрес и порт сервера, к которому будем подключаться
         private readonly int _port; // порт сервера
         private readonly string _address; // адрес сервера
-        const string WritePath = @"log_client.txt";
+        const string WritePath = @"log_client.txt"; // лог-файл клиента
         public Client(int port, string address)
         {
             _port = port;

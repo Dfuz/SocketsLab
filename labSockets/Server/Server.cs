@@ -39,7 +39,7 @@ namespace labSockets
                         TcpClient client = listener.AcceptTcpClient();
                         ClientObject clientObject = new ClientObject(client, m_fileWriter);
                         Console.WriteLine("Подключен клиент с IP: " + Convert.ToString(((IPEndPoint)client.Client.RemoteEndPoint).Address) + ":"
-                                                                    + Convert.ToString(((System.Net.IPEndPoint)client.Client.RemoteEndPoint).Port));
+                                                                    + Convert.ToString(((IPEndPoint)client.Client.RemoteEndPoint).Port));
                         // создаем новый поток для обслуживания нового клиента
                         var clientThread = new Thread(new ThreadStart(clientObject.Process));
                         clientThread.Start();
