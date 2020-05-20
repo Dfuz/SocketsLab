@@ -41,7 +41,7 @@ namespace labSockets
                     builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
                 }
                 while (socket.Available > 0);
-                Console.WriteLine("ответ сервера: " + builder.ToString());
+                Console.WriteLine("Ответ сервера: " + builder.ToString());
 
                 // закрываем сокет
                 socket.Shutdown(SocketShutdown.Both);
