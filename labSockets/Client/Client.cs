@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -10,47 +11,47 @@ namespace labSockets
         // адрес и порт сервера, к которому будем подключаться
         private readonly int _port; // порт сервера
         private readonly string _address; // адрес сервера
-        const string WritePath = @"log_client.txt"; // лог-файл клиента
+        private const string WritePath = @"log_client.txt"; // лог-файл клиента
+        private static TcpClient _client;
         public Client(int port, string address)
         {
             _port = port;
             _address = address;
+
+            // Establish an event handler to process key press events.
+            Console.CancelKeyPress += MyHandler;
         }
         public void Start()
         {
-            TcpClient client = null;
             try
             {
-                client = new TcpClient(_address, _port);
-                NetworkStream stream = client.GetStream();
+                _client = new TcpClient(_address, _port);
+                var stream = _client.GetStream();
                 while (true)
                 {
-                    string message = Console.ReadLine();
+                    var message = Console.ReadLine();
 
                     // преобразуем сообщение в массив байтов
-                    byte[] data = Encoding.UTF8.GetBytes(message);
+                    byte[] data = Encoding.UTF8.GetBytes(message ?? string.Empty);
 
                     // отправка сообщения
                     stream.Write(data, 0, data.Length);
 
-                    string MyIpClient, MyPortClient;
-                    MyIpClient = Convert.ToString(((System.Net.IPEndPoint)client.Client.RemoteEndPoint).Address);
-                    MyPortClient = Convert.ToString(((System.Net.IPEndPoint)client.Client.RemoteEndPoint).Port);
+                    var myIpClient = Convert.ToString(((IPEndPoint)_client.Client.RemoteEndPoint).Address);
+                    var myPortClient = Convert.ToString(((IPEndPoint)_client.Client.RemoteEndPoint).Port);
 
-                    using (StreamWriter sw = new StreamWriter(WritePath, true, System.Text.Encoding.Default))
+                    using (StreamWriter sw = new StreamWriter(WritePath, true, Encoding.Default))
                     {
-                        sw.WriteLine("Date: " + DateTime.Now.ToString() + " IP: " + MyIpClient + ":" + MyPortClient + " Message: " + message);
+                        sw.WriteLine("Date: " + DateTime.Now.ToString() + " IP: " + myIpClient + ":" + myPortClient + " Message: " + message);
                     }
-
 
                     // получаем ответ
                     data = new byte[256]; // буфер для ответа
-                    StringBuilder builder = new StringBuilder();
-                    int bytes = 0; // количество полученных байт
+                    var builder = new StringBuilder();
 
                     do
                     {
-                        bytes = stream.Read(data, 0, data.Length);
+                        var bytes = stream.Read(data, 0, data.Length); // количество полученных байт
                         builder.Append(Encoding.UTF8.GetString(data, 0, bytes));
                     }
                     while (stream.DataAvailable);
@@ -58,10 +59,11 @@ namespace labSockets
                     message = builder.ToString();
                     Console.WriteLine("Ответ сервера: " + message);
 
-                    using (StreamWriter sw = new StreamWriter(WritePath, true, System.Text.Encoding.Default))
+                    using (var sw = new StreamWriter(WritePath, true, Encoding.Default))
                     {
-                        sw.WriteLine("Date: " + DateTime.Now.ToString() + " IP: " + MyIpClient + ":" + MyPortClient + " Response: " + message);
+                        sw.WriteLine("Date: " + DateTime.Now.ToString() + " IP: " + myIpClient + ":" + myPortClient + " Response: " + message);
                     }
+
                 }
             }
             catch (Exception ex)
@@ -70,9 +72,15 @@ namespace labSockets
             }
             finally
             {
-                client?.Close();
+                _client?.Close();
+                Console.ReadKey(true);
             }
-            Console.ReadKey();
+        }
+
+        private static void MyHandler(object sender, ConsoleCancelEventArgs args)
+        {
+            Console.WriteLine("Выход из программы...");
+            _client?.Close();
         }
     }
 }
