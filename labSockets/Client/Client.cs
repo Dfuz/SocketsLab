@@ -7,11 +7,22 @@ using System.Text;
 namespace labSockets
 {
     internal class Client : ISocketsLab
-    {
-        // адрес и порт сервера, к которому будем подключаться
-        private readonly int _port; // порт сервера
-        private readonly string _address; // адрес сервера
-        private const string WritePath = @"log_client.txt"; // лог-файл клиента
+    {   
+        /// <summary>
+        /// порт сервера
+        /// </summary>
+        private readonly int _port; 
+
+        /// <summary>
+        /// адрес сервера
+        /// </summary>
+        private readonly string _address; 
+
+        /// <summary>
+        /// лог-файл клиента
+        /// </summary>
+        private const string WritePath = "log_client.txt"; 
+        
         private static TcpClient _client;
         public Client(int port, string address)
         {
@@ -72,7 +83,7 @@ namespace labSockets
             }
             finally
             {
-                _client?.Close();
+                _client?.Close(); 
                 Console.ReadKey(true);
             }
         }

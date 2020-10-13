@@ -13,7 +13,7 @@ namespace labSockets
         private static readonly int NumberOfConnections = 4; // максимальное число одновременных подключений
         private const string m_fileName = @"log.txt"; // файл для логов
         private TextWriter m_fileWriter = null;
-        List<Thread> connectionList;
+        private List<Thread> connectionList;
         public Server(int port)
         {
             _port = port;
@@ -40,6 +40,7 @@ namespace labSockets
                         ClientObject clientObject = new ClientObject(client, m_fileWriter);
                         Console.WriteLine("Подключен клиент с IP: " + Convert.ToString(((IPEndPoint)client.Client.RemoteEndPoint).Address) + ":"
                                                                     + Convert.ToString(((IPEndPoint)client.Client.RemoteEndPoint).Port));
+
                         // создаем новый поток для обслуживания нового клиента
                         var clientThread = new Thread(new ThreadStart(clientObject.Process));
                         clientThread.Start();
